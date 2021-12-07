@@ -1,0 +1,112 @@
+[src]
+	https://www.igcd.net/game.php?id=1000010803
+
+[format]
+	[heavy_tank]
+		[is3]
+			[mission]
+				{Entity "is3" __self.address__
+					{Position __self__}
+					{xform zl __self__}
+					{TexMod ""}
+					{SpawnedInFog}
+					{Volume "ram"
+						{able {visible 0}{bullet 0}{throwing 0}{obstacle 0}{contact 0}{contact_ground 0}{blast 0}{select 0}{touch 0}}
+					}
+					{Extender "enumerator"
+						{number 876}
+					}
+					{Interaction
+						{Calls
+							{"start_check_sinking" 2461 -1812.42}
+						}
+					}
+					{Player 0}
+					{Operatable}
+					{MID 229}
+					{Chassis
+						{MovementSpeed 4.0555556}
+					}
+				}
+			[inventory]
+				{Inventory __self.address___
+					{box
+						{clear}
+						{item "repair_kit" 10 {cell 0 0}}	
+						{item "mgun" "ammo" 60000 {cell 2 0}}
+						{item "bullet122" "ap" "ammo" 250 {cell 0 2}}
+						{item "bullet122" "fg" "ammo" 250 {cell 0 3}}
+						{item "bullet122" "apcr" "ammo" 250 {cell 0 4}}
+						{item "hmgun" "ammo" 45000 {cell 0 6}}
+					}
+				}
+		[centurion]
+			[object]
+				__self__
+			[inventory]
+				{Inventory __self.address__
+					{box
+						{clear}
+						{item "repair_kit" 10 {cell 0 0}}	
+						{item "mgun" "ammo" 60000 {cell 2 0}}
+						{item "bullet76" "ap" "ammo" 300 {cell 0 2}}
+						{item "bullet76" "fg" "ammo" 300 {cell 0 3}}
+						{item "bullet76" "apcr" "ammo" 150 {cell 0 4}}
+						{item "bar" filling "mgun" "ammo" 13 {cell 0 7}}
+						{item "mgun" "ammo" 45000 {cell 0 9}}
+					}
+				}
+		[m26e4]
+			[object]
+				__self__
+			[inventory]
+				{Inventory __self.address__
+					{box
+						{clear}
+						{item "repair_kit" 10 {cell 0 0}}	
+						{item "mgun" "ammo" 60000 {cell 2 0}}
+						{item "bullet90" "ap" "ammo" 300 {cell 0 2}}
+						{item "bullet90" "fg" "ammo" 300 {cell 0 3}}
+						{item "bullet90" "apcr" "ammo" 150 {cell 0 4}}
+						{item "bar" filling "mgun" "ammo" 13 {cell 0 7}}
+						{item "mgun" "ammo" 45000 {cell 0 9}}
+					}
+				}
+		[black_prince]
+            		[object]
+				__self__
+			[inventory]
+				{Inventory __self.address__
+					{box
+						{clear}
+						{item "repair_kit" 10 {cell 0 0}}
+						{item "mgun" "ammo" 60000 {cell 2 0}}
+						{item "bullet76" "ap" "ammo" 300 {cell 0 2}}
+						{item "bullet76" "fg" "ammo" 300 {cell 0 3}}
+						{item "bullet76" "apcr" "ammo" 150 {cell 0 4}}
+						{item "bar" filling "mgun" "ammo" 13 {cell 0 7}}
+						{item "mgun" "ammo" 45000 {cell 0 9}}
+					}
+				}
+	[light_tank]
+		[t60]
+			[object]
+			[inventory]
+				{Inventory __self.address___
+					{box
+						{clear}
+						{item "repair_kit" 10 {cell 0 0}}
+						{item "can" filling "fuel" 120 {cell 2 0}}
+						{item "bullet20" "zenite" "ammo" 7000 {cell 4 0}}
+						{item "mgun" "ammo" 30000 {cell 4 0}}
+					}
+				}
+	[__brain__]
+		{Brain __self.address__
+			{Properties
+				{control user}
+				{fire_mode hold}
+			}
+			{LookAt 40.2025 -3460.55 0.00427246}
+			{IdleMovement 0 1 0}
+		}

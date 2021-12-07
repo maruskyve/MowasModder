@@ -1,0 +1,459 @@
+##: import window kivy.core.window
+#: import hex kivy.utils.get_color_from_hex
+#: import Label kivy.uix.label
+#: import window kivy.core.window
+#: import Clipboard kivy.core.clipboard.Clipboard
+
+#:set winSize window.Window.size
+#:set winWidth winSize[0]
+#:set winHeight winSize[1]
+
+#:set xPadding 7.5
+#:set yPadding 4
+
+<Sm>:
+    Homepage:
+        name: 'homepageSc'
+
+<Homepage>:
+    # use on_parent to __init__
+    on_parent:
+        root.valueInit()
+
+    #:set homepageBg '#FFFFFFFF'
+    #:set primaryFontCol '006FCA'
+    canvas.before:
+        Color:
+            rgb: hex(homepageBg)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        id: main_bl
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 10
+            BoxLayout:
+                size_hint: None, None
+                size: main_bl.size[0], 0.05*main_bl.size[1]
+                Label:
+                    text: 'Mowas Modder'
+                    canvas.before:
+                        Color:
+                            rgb: hex('1E8DCA')
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+            # bl2
+            BoxLayout:
+                id: folderpath_bl
+                orientation: 'vertical'
+                size_hint: None, None
+                size: main_bl.size[0], 0.15*main_bl.size[1]
+                padding: xPadding, yPadding
+                canvas.before:
+                    Color:
+                        rgb: hex('#FFFFFFFF')
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    text: 'Save Game Folderpath'
+                    color: primaryFontCol
+                    size_hint: None, None
+                    size: folderpath_bl.size[0]-xPadding*2, 0.15*folderpath_bl.size[1]
+                    # for text aligning
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                BoxLayout:
+                    id: folderpath_bl2
+                    size_hint: None, None
+                    size: folderpath_bl.size[0]-xPadding*2, 0.4*folderpath_bl.size[1]
+                    TextInput:
+                        id: folderpath
+                        hint_text: 'Enter folderpath here'
+                        # textinput font color
+                        foreground_color: hex('606060')
+                        background_color: hex('FFFFFFFF')
+                        size_hint: None, None
+                        size: 0.8*folderpath_bl2.size[0], 0.8*folderpath_bl2.size[1]
+                        multiline: False
+                    Button:
+                        id: folderpath_verify_button
+                        text: 'Verify'
+                        size_hint: None, None
+                        size: folderpath_bl2.size[0]-folderpath.size[0], folderpath.size[1]
+                        color: hex('098978')
+                        canvas.before:
+                            Color:
+                                rgb: hex('29CAB7')
+                            Line:
+                                width: 1
+                                rectangle: self.x, self.y, self.width, self.height
+                        background_color: hex('FFFFFFF')
+                        background_normal: ''
+                        on_press:
+                            root.buttonClicked(self, '2A76CA', 'FFFFFFFF')
+                        on_release:
+                            root.folderpathVerify(folderpath.text, self)
+                Label:
+                    text: 'usually: \nC:\\Users\\Username\\Documents\\my_games\\men of war - assault squad 2\\profiles\\xx.....xx\\save'
+                    color: primaryFontCol
+                    font_size: 0.4*self.size[1]
+                    size_hint: None, None
+                    size: folderpath_bl.size[0]-xPadding*2, 0.2*folderpath_bl.size[1]
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+            BoxLayout:
+                id: savegame_list_bl
+                orientation: 'vertical'
+                padding: xPadding, yPadding
+                Label:
+                    id: savegame_list_label
+                    text: 'Savegame List'
+                    size_hint: None, None
+                    size: savegame_list_bl.size[0]-xPadding*2, 0.15*savegame_list_bl.size[1]
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                    color: primaryFontCol
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: 1.5, 1.5
+                    size_hint: None, None
+                    size: savegame_list_bl.size[0]-xPadding*2, savegame_list_bl.size[1]-savegame_list_label.size[1]
+                    canvas.before:
+                        Color:
+                            rgb: hex('006FCA')
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+                    ScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        canvas.before:
+                            Color:
+                                rgb: hex('FFFFFFFF')
+                            Rectangle:
+                                size: self.size
+                                pos: self.pos
+                        Button:
+                            id: savegame_folder_list
+                            text: 'No savegame found'
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            text_size: self.width, None
+                            padding: 5, 5
+                            color: hex('006BCA')
+                            background_normal: ''
+                            background_down: ''
+            BoxLayout:
+                id: savegame_foldername_bl
+                orientation: 'vertical'
+                size_hint: None, None
+                size: main_bl.size[0], 0.1*main_bl.size[1]
+                padding: xPadding, yPadding
+                canvas.before:
+                    Color:
+                        rgb: hex('#FFFFFFFF')
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    id: savegame_foldername_label
+                    text: 'Save Game Folder Name'
+                    size_hint: None, None
+                    size: savegame_foldername_bl.size[0]-xPadding*2, 0.2*savegame_foldername_bl.size[1]
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                    color: primaryFontCol
+                BoxLayout:
+                    id: savegame_foldername_bl2
+                    size_hint: None, None
+                    size: savegame_foldername_bl.size[0]-xPadding*2, savegame_foldername_bl.size[1]-savegame_foldername_label.size[1]
+                    TextInput:
+                        id: savegame_foldername
+                        hint_text: 'Enter folder name here'
+                        multiline: False
+                        foreground_color: hex('606060')
+                        background_color: hex('FFFFFFFF')
+                        size_hint: None, None
+                        size: 0.8*savegame_foldername_bl2.size[0], 0.6*savegame_foldername_bl2.size[1]
+#                        canvas.before:
+#                            # Draw border first
+#                            Color:
+#                                rgba: hex('3ECA93')
+#                            Rectangle:
+#                                size: self.size
+#                                pos: self.pos
+#                            # Draw background (covers most of the above border)
+#                            Color:
+#                                rgba: self.background_color
+#                            Rectangle:
+#                                size: (self.width - self.border[1] - self.border[3], self.height - self.border[0] - self.border[2])
+#                                pos: (self.x + self.border[3], self.y + self.border[0])
+#                            # set the color for the text
+#                            Color:
+#                                rgba: self.foreground_color
+                    Button:
+                        id: savegame_foldername_btn
+                        text: 'Verify'
+                        size_hint: None, None
+                        size: savegame_foldername_bl2.size[0]-savegame_foldername.size[0], savegame_foldername.size[1]
+                        color: hex('098978')
+                        canvas.before:
+                            Color:
+                                rgb: hex('29CAB7')
+                            Line:
+                                width: 1
+                                rectangle: self.x, self.y, self.width, self.height
+                        background_color: hex('#FFFFFFF')
+                        background_normal: ''
+                        on_press:
+                            root.buttonClicked(self, '2A76CA', 'FFFFFFFF')
+                        on_release:
+                            root.processSavegameFoldername(self)
+                        # for text copying
+    #                    on_release:
+    #                        Clipboard.copy(savegame_foldername.text)
+            BoxLayout:
+                id: difficult_level_main_bl
+                orientation: 'vertical'
+                size_hint: None, None
+                size: main_bl.size[0], 0.1*main_bl.size[1]
+                padding: xPadding, yPadding
+                canvas.before:
+                    Color:
+                        rgb: hex('#FFFFFFFF')
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    text: 'Difficult Level'
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                    color: primaryFontCol
+                BoxLayout:
+                    #:set dl_btn_bg_col '#4FABCA'
+                    id: difficult_level_bl
+                    spacing: 1
+                    Button:
+                        id: easy
+                        text: 'Easy'
+                        background_color: dl_btn_bg_col
+                        background_normal: ''
+                        on_release:
+                            root.processDifficultLevel(self, dl_btn_bg_col)
+                    Button:
+                        id: medium
+                        text: 'Medium'
+                        background_color: dl_btn_bg_col
+                        background_normal: ''
+                        on_release:
+                            root.processDifficultLevel(self, dl_btn_bg_col)
+                    Button:
+                        id: hard
+                        text: 'Hard'
+                        background_color: dl_btn_bg_col
+                        background_normal: ''
+                        on_release:
+                            root.processDifficultLevel(self, dl_btn_bg_col)
+                    Button:
+                        id: heroic
+                        text: 'Heroic'
+                        background_color: dl_btn_bg_col
+                        background_normal: ''
+                        on_release:
+                            root.processDifficultLevel(self, dl_btn_bg_col)
+            BoxLayout:
+                id: action_bl
+                orientation: 'vertical'
+                size_hint: None, None
+                size: main_bl.size[0], 0.1*main_bl.size[1]
+                padding: xPadding, 0
+                canvas.before:
+                    Color:
+                        rgb: hex('#FFFFFFFF')
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    text: 'Action'
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                    color: primaryFontCol
+                BoxLayout:
+                    id: action_bl2
+                    orientation: 'vertical'
+#                    size_hint: None, None
+#                    size: action_bl.size[0], action_bl.size[1]
+                    BoxLayout:
+                        id: result
+                        orientation: 'vertical'
+                        size_hint_y: 0
+#                        size_hint_x: None
+                        size: action_bl2.size[0], 0.2*action_bl2.size[1]
+                    Button:
+                        id: execute_request_btn
+                        text: 'Execute Request'
+                        color: hex('098978')
+                        background_color: hex('FFFFFFF')
+                        background_normal: ''
+                        # for border line
+                        canvas.before:
+                            Color:
+                                rgb: hex('29CAB7')
+                            Line:
+                                width: 1.1
+                                rectangle: self.x, self.y, self.width, self.height
+                        on_press:
+                            root.buttonClicked(self, '2A76CA', 'FFFFFFFF')
+                        on_release:
+                            root.buttonClicked(self, 'FFFFFFFF', '098978')
+                            root.executeRequest()
+            BoxLayout:
+                id: footer_bl
+                size_hint: None, None
+                size: main_bl.size[0], 0.05*main_bl.size[1]
+                padding: xPadding, 0
+                spacing: 1
+                canvas.before:
+                    Color:
+                        rgb: hex('#1E8DCA')
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Button:
+                    text: 'Close'
+                    background_color: hex('#CA454F')
+                    background_normal: ''
+                    size_hint: None, None
+                    size: 0.2*footer_bl.size[0], footer_bl.size[1]
+                    on_release:
+                        Factory.AppExitPopup().open()
+                Button:
+                    text: 'Credit'
+                    background_color: hex('#186ECA')
+                    background_normal: ''
+                    size_hint: None, None
+                    size: 0.2*footer_bl.size[0], footer_bl.size[1]
+                    on_release:
+                        Factory.CreditPopup().open()
+
+#: import Factory kivy.factory.Factory
+
+<ResultLogPopup@Popup>:
+    auto_dismiss: False
+    title: 'Result Log'
+    title_color: hex('7B7B7B')
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
+    size_hint: None, None
+    size: 0.75*winWidth, 0.5*winHeight
+    separator_color: hex('FFFFFFFF')
+    background_color: 89, 202, 168
+    background_normal: ''
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 5
+        spacing: 1
+        BoxLayout:
+            id: result_popup_bl
+            padding: 2, 2
+            canvas.before:
+                Color:
+                    rgb: hex('3900CA')
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                canvas.before:
+                    Color:
+                        rgb: hex('FFFFFFFF')
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label:
+                    id: result_log_label
+                    text: 'Result LOG'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    font_size: 12
+                    padding: 5, 5
+                    color: hex('3900CA')
+        Button:
+            text: 'Close'
+            size_hint: .5, .1
+            background_color: hex('CB5954')
+            background_normal: ''
+            on_release:
+                root.dismiss()
+
+<AppExitPopup@Popup>:
+    auto_dismiss: False
+    title: 'Exit Now?'
+    title_color: hex('353535')
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
+    size_hint: None, None
+    size: 200, 100
+    separator_color: hex('FFFFFFFF')
+    background_color: 89, 202, 168
+    background_normal: ''
+    BoxLayout:
+        padding: 10, 5
+        spacing: 1
+        Button:
+            text: 'Yes'
+            background_color: hex('54CB62')
+            background_normal: ''
+            on_release:
+                root.dismiss()
+                Factory.Homepage().appExit()
+        Button:
+            text: 'No'
+            background_color: hex('CB5954')
+            background_normal: ''
+            on_release:
+                root.dismiss()
+
+<CreditPopup@Popup>:
+    title: 'Credit'
+    title_color: hex('7B7B7B')
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
+    size_hint: None, None
+    size: 0.5*winWidth, 0.2*winHeight
+    separator_color: hex('FFFFFFFF')
+    background_color: 89, 202, 168
+    background_normal: ''
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 5
+        spacing: 1
+        Label:
+            text: 'Created by Mkv'
+            color: hex('626262')
+            font_size: 14
+            size_hint_y: .1
+        Button:
+            text: 'Close'
+            size_hint: .5, .1
+            background_color: hex('CB5954')
+            background_normal: ''
+            on_release:
+                root.dismiss()
+
+

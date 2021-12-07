@@ -1,0 +1,3 @@
+folderpath=C:\Users\MarufN\Documents\my games\men of war - assault squad 2\profiles\-802684725\save
+savegame_foldername=autosave2
+difficult_level=heroic
